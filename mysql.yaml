@@ -1,0 +1,30 @@
+---
+- hosts: client2 
+  become: true
+  become_user: root
+  tasks: 
+  - name: Create folder
+    file: path=/usr/mysql state=directory
+  - name: Install WGET 
+    yum: name=wget state=installed 
+  - name: Install Python 
+    yum: name=MySQL-python state=installed 
+  - name: Download Lib 
+    get_url: url=http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm dest=/usr/mysql/mysql-community-release-el7-5.noarch.rpm 
+  - name: Install rpm 
+    yum: name=/usr/mysql/mysql-community-release-el7-5.noarch.rpm state=present 
+  - name: Install MySQL 
+    yum: name=mysql-server state=installed 
+  - name: MySQL is up and running 
+    service: name=mysqld state=restarted 
+  - name: Create a User 
+    mysql_user: user=varshini password=ec2-user priv=varshini.*:ALL host='%' state=present 
+  - name: Create a Database 
+    mysql_db: name=assignment4 state=present 
+  - name: Adding data into database 
+    copy: src=/etc/ansible/dump.sql dest=/tmp/dump.sql 
+  - name: Import data into database 
+    mysql_db: name=assignment4 state=import target=/tmp/dump.sql 
+  - name: restart mysql 
+    service: name=mysql state=restarted
+

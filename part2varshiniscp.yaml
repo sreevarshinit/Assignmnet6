@@ -1,0 +1,7 @@
+---
+- hosts: 127.0.0.1
+  become: true
+  become_user: root 
+  tasks:
+    - name: Copy the file from 
+      shell: scp ec2-user@172.31.13.16:/home/ec2-user/index.html /etc/ansible/

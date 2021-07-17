@@ -1,0 +1,14 @@
+---
+- hosts: client2
+  become: true
+  become_user: root
+  tasks: 
+  - name: execute output file script 
+    shell: echo "select * from AUTOMATION limit 3" | mysql -uvarshini -pvarshini assignment4 >  /home/ec2-user/output
+
+
+##    script: outputsql.sh
+##    register: out
+
+##  - debug: var=out.stdout_lines
+
